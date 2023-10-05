@@ -6,11 +6,10 @@ const userNames1 = ["Петрик Ольга Іванівна", "Гнатюк П
 let initials;
 
 initials = userNames1.map((name) => {
-    let formattedName = name.split(' ');
-    for (let i = 0; i < formattedName.length; i++) {
-        formattedName[i] = formattedName[i].slice(0, 1);
-    }
-    formattedName = formattedName.join('.') + '.';
+    let formattedName = name
+        .split(' ')
+        .map((word) => word[0] + '.')
+        .join('');
     return formattedName;
 });
 initials.sort();
@@ -20,10 +19,9 @@ console.log(initials); // [ "Г.П.А.", "П.О.І.", "Р.А.О."]
 /* Task 2 */
 
 const userNames2 = ['Петро', 'Емма', 'Юстин', 'Ілля', 'Марта', 'Яна', 'Василь', 'Антон', 'Олена'];
-let filteredNames;
+let filteredNames = [];
 
 // First method
-filteredNames = Array();
 userNames2.forEach((name) => {
     switch (name[0]) {
         case 'А':
@@ -44,20 +42,9 @@ userNames2.forEach((name) => {
 console.log(filteredNames); // ['Емма', 'Юстин', 'Ілля', 'Яна', 'Антон', 'Олена']
 
 // Second method
+const vowels = ['А', 'Е', 'Є', 'И', 'І', 'Ї', 'О', 'У', 'Ю', 'Я'];
 filteredNames = userNames2.filter((name) => {
-    switch (name[0]) {
-        case 'А':
-        case 'Е':
-        case 'Є':
-        case 'И':
-        case 'І':
-        case 'Ї':
-        case 'О':
-        case 'У':
-        case 'Ю':
-        case 'Я':
-            return true;
-    }
+    return vowels.includes(name[0]);
 });
 
 console.log(filteredNames); // ['Емма', 'Юстин', 'Ілля', 'Яна', 'Антон', 'Олена']
