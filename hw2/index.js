@@ -4,7 +4,9 @@
  * Task 1
  */
 
-function durationBetweenDates(dateStart = '24 Feb 2022', dateEnd = new Date(), dimension = 'days') {
+const today = new Date();
+
+function durationBetweenDates(dateStart = '24 Feb 2022', dateEnd = today.toString(), dimension = 'days') {
     let timeDifference = Math.abs(Date.parse(dateStart) - Date.parse(dateEnd));
     switch (dimension) {
         case 'days':
@@ -55,15 +57,14 @@ console.log(updatedPriceData) // {apples: '23.40', bananas: '48.00', oranges: '4
  */
 
 function recursiveOddSumTo(number) {
-    if (number === 1 || number === 0) {
+    if (number === 1) {
         return number;
     } else if (number % 2 === 0) {
         // even number
-        return number - 1 + recursiveOddSumTo(number - 2);
-    } else {
-        // odd number
-        return number + recursiveOddSumTo(number - 2);
+        return recursiveOddSumTo(number - 1);
     }
+    // odd number
+    return number + recursiveOddSumTo(number - 2);
 };
 
 console.log(recursiveOddSumTo(1)) // 1
