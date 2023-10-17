@@ -4,9 +4,7 @@
  * Task 1
  */
 
-const today = new Date();
-
-function durationBetweenDates(dateStart = '24 Feb 2022', dateEnd = today.toString(), dimension = 'days') {
+function durationBetweenDates(dateStart = '24 Feb 2022', dateEnd = Date(), dimension = 'days') {
     let timeDifference = Math.abs(Date.parse(dateStart) - Date.parse(dateEnd));
     switch (dimension) {
         case 'days':
