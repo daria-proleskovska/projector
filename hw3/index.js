@@ -80,17 +80,12 @@ console.log('movieName (ascending):', movies.sort(byProperty('movieName', '>')))
 
 function byProperty(property, direction) {
     return function(a, b) {
-        if (typeof a[property] === 'number' && typeof b[property] === 'number') {
-            if (direction === '<') {
-                return b[property] - a[property];
-            }
-            return a[property] - b[property];
-        } else {
-            if (direction === '<') {
-                return String(b[property]).localeCompare(String(a[property]));
-            }
-            return String(a[property]).localeCompare(String(b[property]));
-        }
+		if ((direction === '>' && a[property] < b[property]) || (direction === '<' && a[property] > b[property])) {
+			return -1;
+		} else if ((direction === '>' && a[property] > b[property]) || (direction === '<' && a[property] < b[property])) {
+			return 1;
+		}
+		return 0;
     }
 };
 
@@ -103,11 +98,7 @@ console.log('---------------------');
 const userNames = ['Петро', 'Емма', 'Петро', 'Емма', 'Марта', 'Яна', 'Василь', 'Антон', 'Олена', 'Емма'];
 
 function filterUnique(array) {
-    const arraySet = new Set();
-    for (let elem of array) {
-        arraySet.add(elem);
-    }
-    return Array.from(arraySet);
+    return Array.from(new Set(array));
 }
 
 console.log(filterUnique(userNames)); // ['Петро', 'Емма', 'Марта', 'Яна', 'Василь', 'Антон', 'Олена'];
