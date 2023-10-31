@@ -79,14 +79,11 @@ console.log('movieName (ascending):', movies.sort(byProperty('movieName', '>')))
 // виведе масив фільмів посортованих по назві, в алфавітному порядку
 
 function byProperty(property, direction) {
-    return function(a, b) {
-		if ((direction === '>' && a[property] < b[property]) || (direction === '<' && a[property] > b[property])) {
-			return -1;
-		} else if ((direction === '>' && a[property] > b[property]) || (direction === '<' && a[property] < b[property])) {
-			return 1;
-		}
-		return 0;
-    }
+	if (direction === '>') {
+		return (a, b) => a[property] > b[property] ? 1 : -1;
+	} else {
+		return (a, b) => a[property] < b[property] ? 1 : -1;
+	}
 };
 
 console.log('---------------------');
