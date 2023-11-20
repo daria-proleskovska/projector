@@ -3,36 +3,42 @@
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const mainButton = document.querySelector('.main-btn');
-    const message = document.querySelector('.message');
+    const message = document.querySelector('.message p');
+    
+    const initTheme = localStorage.getItem('theme');
 
-    if (localStorage.getItem('mainButtonState') === 'on') {
-        applyOnState();
-    } else if (localStorage.getItem('mainButtonState') === 'off') {
-        applyOffState();
+    if (initTheme === 'light') {
+        lightTheme();
+    } else if (initTheme === 'dark') {
+        darkTheme();
     }
 
     mainButton.addEventListener('click', () => {
-        if (localStorage.getItem('mainButtonState') === 'off') {
-            localStorage.setItem('mainButtonState', 'on');
-            localStorage.setItem('stateChangeDate', formatDate(new Date()));
-            applyOnState();
+        if (localStorage.getItem('theme') === 'dark') {
+            lightTheme(true);
         } else {
-            localStorage.setItem('mainButtonState', 'off');
-            localStorage.setItem('stateChangeDate', formatDate(new Date()));
-            applyOffState();
+            darkTheme(true);
         }
     });
 
-    function applyOnState() {
+    function lightTheme(changeLocalStorage = false) {
+        if (changeLocalStorage) {
+            localStorage.setItem('theme', 'light');
+            localStorage.setItem('themeChangeDate', formatDate(new Date()));
+        }
         body.classList.remove('dark');
         mainButton.textContent = 'Turn off';
-        message.innerHTML = `<p>Last turn on: ${localStorage.getItem('stateChangeDate')}</p>`;
+        message.innerText = `Last turn on: ${localStorage.getItem('themeChangeDate')}`;
     }
 
-    function applyOffState() {
+    function darkTheme(changeLocalStorage = false) {
+        if (changeLocalStorage) {
+            localStorage.setItem('theme', 'dark');
+            localStorage.setItem('themeChangeDate', formatDate(new Date()));
+        }
         body.classList.add('dark');
         mainButton.textContent = 'Turn on';
-        message.innerHTML = `<p>Last turn off: ${localStorage.getItem('stateChangeDate')}</p>`;
+        message.innerText = `Last turn off: ${localStorage.getItem('themeChangeDate')}`;
     }
 
     function formatDate(dateObj) {
