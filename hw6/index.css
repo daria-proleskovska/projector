@@ -1,0 +1,48 @@
+.container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 5%;
+}
+.input-field,
+.task-title {
+    margin: 20px 0;
+}
+.create-task-block {
+    margin: 0 0 5%;
+}
+.collection {
+    list-style-type: none;
+    margin: 20px 0;
+    padding: 0;
+}
+.collection li {
+    padding: 0 0 20px 20px;
+}
+.collection li:before {
+    content: '-';
+    display: inline-block;
+    width: 20px;
+    margin: 0 0 0 -20px;
+}
+.delete-item,
+.edit-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 1px;
+    height: 32px;
+    width: 32px;
+    margin: 0 0 0 10px;
+    color: #3490dc;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+.delete-item:hover,
+.edit-item:hover {
+    box-shadow: 0 0 0 3px rgba(52,144,220,.5);
+    border-color: #3490dc;
+    color: #2779bd;
+}
+.edit-task-form {
+    margin: 0 0 0 -20px;
+}
