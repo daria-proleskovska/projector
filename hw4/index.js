@@ -72,22 +72,17 @@ const myPets = {
         } else {
             console.log(`There are ${number} cats.`)
         }
-
-        return this;
     },
     introduceCats() {
         for (let cat of this.cats) {
             const pronoun = cat.sex === 'male' ? 'He' : 'She';
             console.log(`${cat.name} has ${cat.fur} fur. ${pronoun} ${cat.special}.`);
         }
-        
-        return this;
     }
 };
 
-myPets
-    .countCats()
-    .introduceCats();
+myPets.countCats();
+myPets.introduceCats();
 
 /**
  * Task 4
