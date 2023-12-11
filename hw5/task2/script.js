@@ -42,14 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function formatDate(dateObj) {
-        return dateObj.toLocaleString(undefined, {day: '2-digit'})
-            + '-' + dateObj.toLocaleString(undefined, {month: '2-digit'})
-            + '-' + dateObj.toLocaleString(undefined, {year: 'numeric'})
-            + ' ' + dateObj.toLocaleString(undefined, {
-                hourCycle: 'h23',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            });
+        const date = dateObj.getDate() < 10 ? '0' + dateObj.getDate() : dateObj.getDate();
+        const month = dateObj.getMonth() < 9 ? '0' + (dateObj.getMonth() + 1) : dateObj.getMonth() + 1;
+        const year = dateObj.getFullYear();
+        const hours = dateObj.getHours() < 10 ? '0' + dateObj.getHours() : dateObj.getHours();
+        const minutes = dateObj.getMinutes() < 10 ? '0' + dateObj.getMinutes() : dateObj.getMinutes();
+        const seconds = dateObj.getSeconds() < 10 ? '0' + dateObj.getSeconds() : dateObj.getSeconds();
+
+        return `${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
     }
 });
