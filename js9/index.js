@@ -1,4 +1,4 @@
-import {WeatherApp} from './WeatherApp.js';
+import {WeatherApp} from './weatherApp.js';
 import {API_KEY, form, input} from './constants.js'
 
 (() => {
