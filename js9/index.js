@@ -4,9 +4,9 @@ import {API_KEY, form, input} from './constants.js'
 (() => {
     const weatherApp = new WeatherApp(API_KEY);
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        weatherApp.fetchData();
+        await weatherApp.fetchData();
 
         form.reset();
         input.focus();

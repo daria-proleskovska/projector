@@ -6,24 +6,23 @@ export class WeatherApp {
         this.isLoading = false;
     }
 
-    fetchData = () => {
+    fetchData = async () => {
         const inputVal = input.value;
         const url =
             `https://api.openweathermap.org/data/2.5/weather?q=${inputVal}&appid=${this.API_KEY}&units=metric`;
 
         this.isLoading = true;
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                this.updateDOM(data);
-            })
-            .catch((error) => {
-                throw new Error(error);
-            })
-            .finally(() => {
-                this.isLoading = false;
-            })
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log(data);
+            this.updateDOM(data);
+        } catch (error) {
+            throw new Error(error);
+        } finally {
+            this.isLoading = false;
+        }
     }
 
     updateDOM = (data) => {
