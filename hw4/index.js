@@ -4,7 +4,7 @@
  * Task 1
  */
 
-detonatorTimerInterval(3);
+// detonatorTimerInterval(3);
 // 3
 // 2
 // 1
@@ -26,7 +26,7 @@ function detonatorTimerInterval(delay) {
  * Task 2
  */
 
-detonatorTimerTimeout(3);
+// detonatorTimerTimeout(3);
 // 3
 // 2
 // 1
@@ -94,6 +94,19 @@ let securedMyPetsIntroduceCats = myPets.introduceCats.bind(myPets);
 setTimeout(securedMyPetsCountCats, 1000);
 setTimeout(securedMyPetsIntroduceCats, 2000);
 
+myPets.cats = [
+    {
+        name: 'Pirat',
+        sex: 'male',
+        fur: 'black and white',
+        special: 'has the most beautiful tail in the world'
+    }
+];
+myPets.countCats();
+
+myPets.countCats = () => console.log("NO CATS!");
+myPets.countCats();
+
 /**
  * Task 5
  */
@@ -109,9 +122,9 @@ function slower(func, seconds) {
     }
 }
 
-let slowedMultiply = slower(multiply, 5);
+// let slowedMultiply = slower(multiply, 5);
 
-slowedMultiply(5, 10);
+// slowedMultiply(5, 10);
 
 // виведе в консоль "Chill out, you will get your result in 5 seconds
 //...через 5 секунд виведе результат роботи 'multiply'
