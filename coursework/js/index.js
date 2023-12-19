@@ -10,7 +10,7 @@ import {TableSort} from './TableSort.js';
     const tabsList = document.querySelector('.tabs-list');
     const tabs = new Tabs(tabsNav, tabsList, 2);
     
-    const API_KEY = 'PSswObH5FHBJFAfG6XhnIFP2sdW5zLr5';
+    const API_KEY = 'aBB0i9V7XpTbcSegagt7W6GhRytBAwCR';
     
     if (readyState === 'interactive' || readyState === "complete") {
         tabs.initTabs();
