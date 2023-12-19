@@ -301,8 +301,8 @@ button:disabled {
     justify-content: center;
     position: relative;
     z-index: 1;
-    filter: url('../images/filters.svg');
     font-weight: 500;
+    filter: url('../images/filters.svg#goo');
 }
 
 .tabs-nav li {
@@ -316,7 +316,7 @@ button:disabled {
     transition: all var(--transition-duration) ease;
     -webkit-user-select: none;
     -ms-user-select: none;
-    user-select: none;    
+    user-select: none;
 }
 
 .tabs-nav li:first-child {
