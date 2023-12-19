@@ -52,6 +52,7 @@ body {
     background: #fff;
     border-radius: var(--border-radius_large);
     max-width: 800px;
+    width: 100%;
 }
 
 .title {
@@ -335,8 +336,8 @@ form button {
     background: var(--secondary-color_light);
     border-radius: 50%;
     content: '';
-    width: 4.4em;
-    height: 2.95em;
+    width: 25%;
+    height: 50%;
     position: absolute;
     transform: scale(0);
     transition: transform var(--transition-duration) ease;
@@ -345,12 +346,12 @@ form button {
 
 .tabs-nav li:before {
     top: -25%;
-    left: 20%;
+    left: 25%;
 }
 
 .tabs-nav li:after {
     bottom: -25%;
-    right: 20%;
+    right: 25%;
 }
 
 .tabs-nav li:hover:before,
@@ -475,8 +476,9 @@ table td {
     vertical-align: top;
 }
 
-table td:first-child {
-    width: 25%;
+.holidays-table th:first-child,
+.holidays-table td:first-child {
+    width: 30%;
 }
 
 table .info {
