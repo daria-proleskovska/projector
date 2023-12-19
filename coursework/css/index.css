@@ -186,7 +186,7 @@ button:disabled {
     opacity: .5;
 }
 
-.holidays-form {
+form {
     border-bottom: 1px solid var(--secondary-color_light);
     margin: 0 0 2em;
     padding: 0 var(--content-side-padding);
@@ -197,15 +197,15 @@ button:disabled {
     column-gap: 2em;
 }
 
-.holidays-form > * {
+form > * {
     width: 100%;
 }
 
-.holidays-form > .width-50 {
+form > .width-50 {
     width: calc(50% - 1em);
 }
 
-.holidays-form button {
+form button {
     width: auto;
 }
 
@@ -309,7 +309,7 @@ button:disabled {
     background: var(--secondary-color_light);
     border-right: 1px solid var(--secondary-color_dark);
     cursor: pointer;
-    min-width: 10em;
+    min-width: 35%;
     padding: .8em 1.32em;
     position: relative;
     text-align: center;
