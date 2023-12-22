@@ -26,6 +26,10 @@ import {TableSort} from './TableSort.js';
         });
     }
 
+    /**
+     * Date Calculator Form
+     */
+
     function initDateCalculatorForm() {
         const dateCalculatorForm = document.querySelector('.date-calculator-form');
         const inputStartDate = document.querySelector('#start-date');
@@ -97,11 +101,9 @@ import {TableSort} from './TableSort.js';
             radioUnit.forEach(radio => radio.checked ? unit = radio.value : '');
             const dateCalculator = new DateCalculator(startDate, endDate, filterDays, unit);
             const result = dateCalculator.resultOutput();
-            const formattedStartDate = formatDate(startDate);
-            const formattedEndDate = formatDate(endDate);
             const newEntry = {
-                startDate: formattedStartDate,
-                endDate: formattedEndDate,
+                startDate: startDate,
+                endDate: endDate,
                 result: result,
             }
 
@@ -112,7 +114,7 @@ import {TableSort} from './TableSort.js';
             }
 
             const newRow = document.createElement('tr');
-            newRow.innerHTML += `<td>${formattedStartDate}</td><td>${formattedEndDate}</td><td>${result}</td>`;
+            newRow.innerHTML += `<td>${startDate}</td><td>${endDate}</td><td>${result}</td>`;
             calculationsTableBody.prepend(newRow);
 
             window.scrollBy(0, calculationsTable.getBoundingClientRect().top - 100);
@@ -120,13 +122,9 @@ import {TableSort} from './TableSort.js';
         });
     }
 
-    function formatDate(dateString) {
-        const dateObj = new Date(dateString);
-        const date = dateObj.getDate() < 10 ? '0' + dateObj.getDate() : dateObj.getDate();
-        const month = dateObj.getMonth() < 9 ? '0' + (dateObj.getMonth() + 1) : dateObj.getMonth() + 1;
-        const year = dateObj.getFullYear();
-        return `${date}.${month}.${year}`;
-    }
+    /**
+     * Holidays Calendar Form
+     */
 
     async function initHolidaysForm() {
         const holidaysForm = document.querySelector('.holidays-form');
@@ -191,7 +189,7 @@ import {TableSort} from './TableSort.js';
                 day = day < 10 ? '0' + day : day;
                 month = month < 10 ? '0' + month : month;
                 tableBody.innerHTML += `<tr>
-                    <td data-sorting-criteria="date">${day}.${month}.${year}</td>
+                    <td data-sorting-criteria="date">${year}-${month}-${day}</td>
                     <td data-sorting-criteria="name">${holiday.name}</td>
                 </tr>`;
             })
