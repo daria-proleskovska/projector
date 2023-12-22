@@ -711,7 +711,17 @@ table .material-symbols-outlined {
      * Table
      */
 
+    .table-wrapper {
+        margin: 0 calc(var(--content-side-padding) - 5px);
+    }
+
     table {
+        border-spacing: 5px;
         font-size: 14px;
+    }
+
+    table th, table td {
+        padding-left: .75em;
+        padding-right: .75em;
     }
 }

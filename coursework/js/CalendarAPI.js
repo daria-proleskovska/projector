@@ -7,7 +7,7 @@ export class CalendarAPI {
     #loader;
     #abortController;
 
-    constructor(API_ENDPOINT, API_KEY, API_ENDPOINT_PARAMETERS, errorContainer, loader) {
+    constructor(API_ENDPOINT, API_KEY, API_ENDPOINT_PARAMETERS, errorContainer, loader = false) {
         this.#API_BASE_URL = 'https://calendarific.com/api/v2';
         this.#API_ENDPOINT = API_ENDPOINT;
         this.#API_KEY = API_KEY;
@@ -18,7 +18,9 @@ export class CalendarAPI {
     }
 
     getData = async () => {
-        this.#loader.classList.remove('hidden');
+        if (this.#loader) {
+            this.#loader.classList.remove('hidden');
+        }
 
         if (this.#abortController) {
             try {
@@ -49,7 +51,9 @@ export class CalendarAPI {
             this.#errorContainer.innerHTML = `<p class="msg error">${error}</p>`;
             throw new Error(error);
         } finally {
-            this.#loader.classList.add('hidden');
+            if (this.#loader) {
+                this.#loader.classList.add('hidden');
+            }
         }
     };
 }
