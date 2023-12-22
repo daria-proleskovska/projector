@@ -1,4 +1,6 @@
 import {Tabs} from './Tabs.js';
+import {DateCalculator} from './DateCalculator.js';
+import {LocalStorageOperator} from './LocalStorageOperator.js';
 import {CalendarAPI} from './CalendarAPI.js';
 import {CustomDatalist} from './CustomDatalist.js';
 import {TableSort} from './TableSort.js';
@@ -8,18 +10,122 @@ import {TableSort} from './TableSort.js';
     
     const tabsNav = document.querySelector('.tabs-nav');
     const tabsList = document.querySelector('.tabs-list');
-    const tabs = new Tabs(tabsNav, tabsList, 2);
+    const tabs = new Tabs(tabsNav, tabsList, 1);
     
     const API_KEY = 'aBB0i9V7XpTbcSegagt7W6GhRytBAwCR';
     
     if (readyState === 'interactive' || readyState === "complete") {
         tabs.initTabs();
-        await initHolidaysForm()
+        initDateCalculatorForm();
+        await initHolidaysForm();
     } else {
         window.addEventListener('DOMContentLoaded', async () => {
             tabs.initTabs();
-            await initHolidaysForm()
+            initDateCalculatorForm();
+            await initHolidaysForm();
         });
+    }
+
+    function initDateCalculatorForm() {
+        const dateCalculatorForm = document.querySelector('.date-calculator-form');
+        const inputStartDate = document.querySelector('#start-date');
+        const inputEndDate = document.querySelector('#end-date');
+        const presetLinks = document.getElementsByClassName('preset');
+        const radioFilterDays = document.getElementsByName('filter-days');
+        const radioUnit = document.getElementsByName('time-unit');        
+        const calculationsTable = document.querySelector('.calculations-table');
+        const calculationsTableBody = document.querySelector('.calculations-table tbody');
+        const infoRow = calculationsTableBody.getElementsByClassName('info');
+        const recentCalculations = new LocalStorageOperator('recentCalculations', 10);
+        const recentCalculationsObj = recentCalculations.getParsedData();
+
+        if (recentCalculationsObj.length) {
+            infoRow[0].remove();
+        }
+
+        recentCalculationsObj.forEach(obj => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML += `<td>${obj.startDate}</td><td>${obj.endDate}</td><td>${obj.result}</td>`;
+            calculationsTableBody.prepend(newRow);
+        });
+
+        inputStartDate.addEventListener('input', () => {
+            const startDate = inputStartDate.value;
+            inputEndDate.removeAttribute('disabled');
+            inputEndDate.setAttribute('min', startDate);
+            if (inputEndDate.value === '') {
+                inputEndDate.value = startDate;
+                inputStartDate.setAttribute('max', startDate);
+            }
+        });
+
+        inputStartDate.addEventListener('change', () => {
+            if (inputStartDate.value.length < 10) {
+                inputEndDate.setAttribute('disabled', '');
+            }
+        });
+
+        inputEndDate.addEventListener('input', () => {
+            inputStartDate.setAttribute('max', inputEndDate.value);
+        });
+
+        for (let i = 0; i < presetLinks.length; i++) {
+            presetLinks[i].addEventListener('click', event => {
+                event.preventDefault();
+
+                if (inputEndDate.value !== '') {
+                    const newDateTimeStamp = Date.parse(inputEndDate.value) + presetLinks[i].dataset.preset * 86400000;
+                    const newDate = new Date();
+                    newDate.setTime(newDateTimeStamp);
+                    const newDateString = newDate.toISOString();
+                    const newDateStringNoTime = newDateString.slice(0, newDateString.indexOf('T'));
+                    inputEndDate.value = newDateStringNoTime;
+                    inputStartDate.setAttribute('max', newDateStringNoTime);
+                }
+            })
+        }
+        
+        dateCalculatorForm.addEventListener('submit', event => {
+            event.preventDefault();
+            event.submitter.blur();
+            
+            const startDate = inputStartDate.value;
+            const endDate = inputEndDate.value;
+            let filterDays;
+            let unit;
+            radioFilterDays.forEach(radio => radio.checked ? filterDays = radio.value : '');
+            radioUnit.forEach(radio => radio.checked ? unit = radio.value : '');
+            const dateCalculator = new DateCalculator(startDate, endDate, filterDays, unit);
+            const result = dateCalculator.resultOutput();
+            const formattedStartDate = formatDate(startDate);
+            const formattedEndDate = formatDate(endDate);
+            const newEntry = {
+                startDate: formattedStartDate,
+                endDate: formattedEndDate,
+                result: result,
+            }
+
+            recentCalculations.storeData(newEntry);
+
+            if (infoRow.length) {
+                infoRow[0].remove();
+            }
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML += `<td>${formattedStartDate}</td><td>${formattedEndDate}</td><td>${result}</td>`;
+            calculationsTableBody.prepend(newRow);
+
+            window.scrollBy(0, calculationsTable.getBoundingClientRect().top - 100);
+            dateCalculatorForm.reset();
+        });
+    }
+
+    function formatDate(dateString) {
+        const dateObj = new Date(dateString);
+        const date = dateObj.getDate() < 10 ? '0' + dateObj.getDate() : dateObj.getDate();
+        const month = dateObj.getMonth() < 9 ? '0' + (dateObj.getMonth() + 1) : dateObj.getMonth() + 1;
+        const year = dateObj.getFullYear();
+        return `${date}.${month}.${year}`;
     }
 
     async function initHolidaysForm() {
@@ -27,13 +133,21 @@ import {TableSort} from './TableSort.js';
         const errorContainer = document.querySelector('.holidays-form .msg-container');
         const inputCountry = document.querySelector('#input-country');
         const inputYear = document.querySelector('#input-year');
+        const submitBtn = document.querySelector('#holidays-form-submit');
+        const loader = document.querySelector('.loader-box');
         const currentYear = new Date().getFullYear();
         
         inputYear.value = currentYear;
         
-        const calendarCountries = new CalendarAPI('/countries', API_KEY, '', errorContainer);
-        const countriesJSON = await calendarCountries.getData();
-        const {countries} = countriesJSON.response;
+        let countries;
+        if (sessionStorage.getItem('countries') !== null) {
+            countries = JSON.parse(sessionStorage.getItem('countries'));
+        } else {
+            const calendarCountries = new CalendarAPI('/countries', API_KEY, '', errorContainer);
+            const countriesJSON = await calendarCountries.getData();
+            countries = countriesJSON.countries;
+            sessionStorage.setItem('countries', JSON.stringify(countries));
+        }
         const countriesDataMap = new Map();
         countries.forEach(country => {
             countriesDataMap.set(country.country_name, country['iso-3166']);
@@ -42,7 +156,10 @@ import {TableSort} from './TableSort.js';
         const inputCountryDatalist = new CustomDatalist(inputCountry, countriesDataMap, 'iso');
         inputCountryDatalist.init();
 
-        inputCountry.addEventListener('validValue', () => inputYear.removeAttribute('disabled'));
+        inputCountry.addEventListener('validValue', () => {
+            inputYear.removeAttribute('disabled');
+            submitBtn.removeAttribute('disabled');
+        });
         inputCountry.addEventListener('invalidValue', () => inputYear.setAttribute('disabled', ''));
 
         const tableHead = document.querySelector('.holidays-table thead');
@@ -65,9 +182,9 @@ import {TableSort} from './TableSort.js';
                 return;
             }
 
-            const calendarHolidays = new CalendarAPI('/holidays', API_KEY, `&country=${countryISO}&year=${yearParam}`, errorContainer);
+            const calendarHolidays = new CalendarAPI('/holidays', API_KEY, `&country=${countryISO}&year=${yearParam}`, errorContainer, loader);
             const holidaysJSON = await calendarHolidays.getData();
-            const {holidays} = holidaysJSON.response;
+            const {holidays} = holidaysJSON;
             tableBody.innerHTML = '';
             holidays.forEach(holiday => {
                 let {day, month, year} = holiday.date.datetime;

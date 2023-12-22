@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Calendar App</title>
   <link rel="icon" type="image/x-icon" href="./favicon.ico">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;1,400;1,500&display=swap">
@@ -13,14 +14,80 @@
 <body>
   <div class="wrapper">
     <div class="page">
-      <h1 class="title">Calendar</h1>
+      <h1 class="title">Date Calculator<br> and<br> Holidays Calendar</h1>
       <ul class="tabs-nav">
-        <li><span>Date duration calculator</span></li>
+        <li><span>Date Calculator</span></li>
         <li><span>Holidays</span></li>
       </ul>
       <ul class="tabs-list">
         <li>
-          <p style="text-align: center;"><i>Will be soon...</i></p>
+          <form class="date-calculator-form">
+            <div class="form-element width-50">
+              <label for="start-date">Start date:</label>
+              <input id="start-date" type="date" required>
+            </div>
+            <div class="form-element width-50">
+              <label for="end-date">End date (exclusive):</label>
+              <input id="end-date" type="date" required disabled>
+              <a class="preset" data-preset="7" href="#">+ 7 days</a>
+              <a class="preset" data-preset="30" href="#">+ 30 days</a>
+            </div>
+            <fieldset class="form-element width-50">
+              <legend>Filter days:</legend>
+              <ul class="radio-list">
+                <li>
+                  <input id="all-days" type="radio" name="filter-days" value="all" checked>
+                  <label for="all-days">All days</label>
+                </li>
+                <li>
+                  <input id="only-weekdays" type="radio" name="filter-days" value="weekdays">
+                  <label for="only-weekdays">Only weekdays</label>
+                </li>
+                <li>
+                  <input id="only-weekends" type="radio" name="filter-days" value="weekends">
+                  <label for="only-weekends">Only weekends</label>
+                </li>
+              </ul> 
+            </fieldset>
+            <fieldset class="form-element width-50">
+              <legend>Unit of time:</legend>
+              <ul class="radio-list">
+                <li>
+                  <input id="days" type="radio" name="time-unit" value="days" checked>
+                  <label for="days">Calculate days</label>
+                </li>
+                <li>
+                  <input id="hours" type="radio" name="time-unit" value="hours">
+                  <label for="hours">Calculate hours</label>
+                </li>
+                <li>
+                  <input id="minutes" type="radio" name="time-unit" value="minutes">
+                  <label for="minutes">Calculate minutes</label>
+                </li>
+                <li>
+                  <input id="seconds" type="radio" name="time-unit" value="seconds">
+                  <label for="seconds">Calculate seconds</label>
+                </li>
+              </ul> 
+            </fieldset>
+            <button type="submit">Calculate</button>
+          </form>
+          <div class="table-wrapper">
+            <table class="calculations-table">
+              <thead>
+                <tr>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="info">
+                  <td colspan="3">No history yet...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </li>
         <li>
           <form class="holidays-form">
@@ -34,7 +101,7 @@
               <input id="input-year" type="number" min="2001" max="2049" required disabled>
               <small>* from 2001 to 2049</small>
             </div>
-            <button type="submit">Show holidays</button>
+            <button id="holidays-form-submit" type="submit" disabled>Show holidays</button>
           </form>
           <div class="table-wrapper">
             <table class="holidays-table">
@@ -45,11 +112,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="info" colspan="2">Holidays will be here...</td>
+                <tr class="info">
+                  <td colspan="2">Holidays will be here...</td>
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="loader-box hidden"><div class="loader"></div>
           </div>
         </li>
       </ul>
